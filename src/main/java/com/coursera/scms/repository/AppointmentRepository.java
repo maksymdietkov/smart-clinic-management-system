@@ -9,6 +9,13 @@ import java.util.List;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    List<Appointment> findByDoctorIdAndAppointmentTimeBetween(Long doctorId, LocalDateTime start, LocalDateTime end);
-}
 
+    // Новый метод для отображения всех приёмов врача
+    List<Appointment> findByDoctorId(Long doctorId);
+
+    // Уже имеющийся метод для фильтрации по времени
+    List<Appointment> findByDoctorIdAndAppointmentTimeBetween(Long doctorId, LocalDateTime start, LocalDateTime end);
+
+    List<Appointment> findByDoctorIdOrderByAppointmentTimeAsc(Long doctorId);
+
+}

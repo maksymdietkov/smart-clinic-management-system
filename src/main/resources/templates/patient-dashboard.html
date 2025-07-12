@@ -1,18 +1,96 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Patient Dashboard</title></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Patient Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f9ff;
+        }
+        .no-results {
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
 <body>
-<h2>Search Doctor</h2>
-<form th:action="@{/patient/search}" method="get">
-    <input name="name" placeholder="Doctor name"/><br/>
+
+<h1>Patient Dashboard</h1>
+
+<form th:action="@{/patient/dashboard}" method="get">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="Search doctors by name..." />
     <button type="submit">Search</button>
 </form>
 
-<ul>
-    <li th:each="doc : ${doctors}">
-        <span th:text="${doc.name}">Name</span> -
-        <span th:text="${doc.speciality}">Speciality</span>
-    </li>
-</ul>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Speciality</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="doctor : ${doctors}">
+        <td th:text="${doctor.name}">Doctor Name</td>
+        <td th:text="${doctor.speciality}">Speciality</td>
+        <td th:text="${doctor.email}">email@example.com</td>
+        <td th:text="${doctor.phone}">123-456-7890</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(doctors)}">
+        <td colspan="4" class="no-results">No doctors found.</td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

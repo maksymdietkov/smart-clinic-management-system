@@ -24,8 +24,11 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
+    public List<Doctor> findAllDoctors() {
+        return doctorRepository.findAll();  // ← этот метод ты используешь в контроллере
+    }
+
     public List<String> getAvailableTimeSlots(Long doctorId, LocalDate date) {
-        // Заглушка: список слотов с 9:00 до 17:00
         return Arrays.asList("09:00", "10:00", "11:00", "13:00", "14:00", "15:00");
     }
 
@@ -44,6 +47,9 @@ public class DoctorService {
 
     public List<Doctor> searchDoctorsByName(String name) {
         return doctorRepository.findByNameContainingIgnoreCase(name);
+    }
+    public Optional<Doctor> findByEmail(String email) {
+        return doctorRepository.findByEmail(email);
     }
 
 }
