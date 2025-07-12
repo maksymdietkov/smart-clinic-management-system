@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Controller
 public class DoctorController {
+
+    private static final Logger logger = Logger.getLogger(DoctorController.class.getName());
 
     @Autowired
     private AppointmentService appointmentService;
@@ -24,24 +27,36 @@ public class DoctorController {
 
     @GetMapping("/doctor/dashboard")
     public String doctorDashboard(Model model, HttpSession session) {
-        // Получаем email доктора из сессии
         String email = (String) session.getAttribute("doctorEmail");
 
-        // Если в сессии нет email — перенаправляем на страницу логина
-        if (email == null) {
+        if (email == null || email.isEmpty()) {
+            logger.warning("Doctor email is missing in session");
             return "redirect:/login-doctor";
         }
 
-        Optional<Doctor> doctorOpt = doctorService.findByEmail(email);
+        Optional<Doctor> doctorOpt;
+        try {
+            doctorOpt = doctorService.findByEmail(email);
+        } catch (Exception e) {
+            logger.severe("Error finding doctor by email: " + e.getMessage());
+            model.addAttribute("error", "Internal server error while fetching doctor");
+            return "login-doctor";
+        }
 
         if (doctorOpt.isPresent()) {
-            Long doctorId = doctorOpt.get().getId();
+            Doctor doctor = doctorOpt.get();
+            Long doctorId = doctor.getId();
+
             List<Appointment> appointments = appointmentService.getAppointmentsForDoctorId(doctorId);
+
+            model.addAttribute("doctor", doctor);
             model.addAttribute("appointments", appointments);
-            return "doctor-dashboard"; // имя Thymeleaf шаблона doctor-dashboard.html
+
+            return "doctor-dashboard";
         } else {
+            logger.warning("Doctor not found for email: " + email);
             model.addAttribute("error", "Doctor not found");
-            return "login-doctor"; // можно сделать страницу ошибки, либо редирект
+            return "login-doctor";
         }
     }
 }

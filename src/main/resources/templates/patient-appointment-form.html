@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>New Appointment</title>
+</head>
+<body>
+
+<h2>Book Appointment with <span th:text="${doctor.name}">Doctor Name</span></h2>
+
+<form th:action="@{/patient/appointments}" th:object="${appointment}" method="post">
+    <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+
+    <label for="appointmentTime">Select Date and Time:</label><br/>
+    <input type="datetime-local" id="appointmentTime" name="appointmentTime" required/><br/><br/>
+
+    <button type="submit">Book Appointment</button>
+</form>
+
+<a th:href="@{/patient/dashboard}">Back to Dashboard</a>
+
+</body>
+</html>

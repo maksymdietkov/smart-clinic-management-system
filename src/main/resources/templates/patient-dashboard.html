@@ -77,6 +77,7 @@
         <th>Speciality</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>Action</th>  <!-- Добавлен столбец для кнопки -->
     </tr>
     </thead>
     <tbody>
@@ -85,9 +86,15 @@
         <td th:text="${doctor.speciality}">Speciality</td>
         <td th:text="${doctor.email}">email@example.com</td>
         <td th:text="${doctor.phone}">123-456-7890</td>
+        <td>
+            <form th:action="@{/patient/appointments/new}" method="get">
+                <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+                <button type="submit">Select</button>
+            </form>
+        </td>
     </tr>
     <tr th:if="${#lists.isEmpty(doctors)}">
-        <td colspan="4" class="no-results">No doctors found.</td>
+        <td colspan="5" class="no-results">No doctors found.</td>
     </tr>
     </tbody>
 </table>

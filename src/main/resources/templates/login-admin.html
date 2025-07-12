@@ -1,13 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Login Admin</title></head>
+<head>
+    <title>Login Admin</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3b82f6; /* голубая строка */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .login-container {
+            flex: 1; /* занимает оставшееся место */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center; /* выравниваем элементы по центру */
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%; /* поля растягиваются на всю ширину формы */
+            padding: 12px 15px;
+            font-size: 15px;
+            border: 1.8px solid #d1d5db;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 5px rgba(59,130,246,0.4);
+        }
+
+        button {
+            width: 100%; /* кнопка тоже растягивается */
+            padding: 12px 0;
+            background-color: #3b82f6;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        p[th\\:text] {
+            color: #e74c3c; /* красный для ошибки */
+            margin-bottom: 15px;
+            font-weight: 600;
+            min-height: 1.2em;
+            text-align: center;
+        }
+    </style>
+</head>
 <body>
-<h1>Login Admin Page</h1>
-<p th:text="${error}"></p>
-<form method="post" action="/login-admin">
-    <input type="text" name="username" placeholder="Username"/>
-    <input type="password" name="password" placeholder="Password"/>
-    <button type="submit">Login</button>
-</form>
+<header>
+    Admin Login
+</header>
+<div class="login-container">
+    <form method="post" action="/login-admin">
+        <p th:text="${error}"></p>
+        <input type="text" name="username" placeholder="Username" required/>
+        <input type="password" name="password" placeholder="Password" required/>
+        <button type="submit">Login</button>
+    </form>
+</div>
 </body>
 </html>

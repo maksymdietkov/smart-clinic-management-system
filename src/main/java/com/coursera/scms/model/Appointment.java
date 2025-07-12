@@ -58,4 +58,5 @@ public class Appointment {
     public void setAppointmentTime(LocalDateTime appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
+
 }

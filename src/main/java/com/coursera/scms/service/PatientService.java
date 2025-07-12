@@ -18,5 +18,8 @@ public class PatientService {
         return patientOpt.map(patient -> patient.getPassword().equals(password)).orElse(false);
     }
 
+    public Optional<Patient> findByEmail(String email) {
+        return patientRepository.findByEmail(email);
+    }
     // можно добавить методы для создания пациента и другие
 }

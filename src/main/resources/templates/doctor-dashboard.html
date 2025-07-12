@@ -3,16 +3,25 @@
 <head>
     <title>Doctor Dashboard</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+        body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+        h2, h3 { text-align: center; color: #2c3e50; }
+        table { border-collapse: collapse; width: 80%; margin: 20px auto; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        th { background-color: #3498db; color: white; }
+        tr:hover { background-color: #f1f9ff; }
+        .no-appointments { text-align: center; color: #888; font-style: italic; margin-top: 30px; }
     </style>
 </head>
 <body>
-<h2 style="text-align: center;">Your Appointments</h2>
 
-<table>
+<h2>Doctor Dashboard</h2>
+<h3 th:text="'Welcome, Dr. ' + ${doctor.name}">Welcome, Doctor</h3>
+
+<div th:if="${#lists.isEmpty(appointments)}" class="no-appointments">
+    You have no upcoming appointments.
+</div>
+
+<table th:if="${!#lists.isEmpty(appointments)}">
     <thead>
     <tr>
         <th>Date & Time</th>

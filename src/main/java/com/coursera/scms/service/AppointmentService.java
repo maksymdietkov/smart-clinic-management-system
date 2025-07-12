@@ -25,9 +25,7 @@ public class AppointmentService {
 
     // Получить список всех записей к доктору на ближайший месяц
     public List<Appointment> getAppointmentsForDoctorId(Long doctorId) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneMonthLater = now.plusMonths(1);
-        return appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doctorId, now, oneMonthLater);
+        return appointmentRepository.findByDoctorIdOrderByAppointmentTimeAsc(doctorId);
     }
 
     // Создать новую запись на прием
@@ -52,5 +50,8 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    // Другие методы можно добавить при необходимости
+    public List<Appointment> getAppointmentsForPatientId(Long patientId) {
+        return appointmentRepository.findByPatientIdOrderByAppointmentTimeAsc(patientId);
+    }
+
 }
