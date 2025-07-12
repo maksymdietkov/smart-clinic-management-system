@@ -2,11 +2,11 @@ package com.coursera.scms.service;
 
 import com.coursera.scms.model.Appointment;
 import com.coursera.scms.repository.AppointmentRepository;
+import com.coursera.scms.repository.DoctorRepository;
+import com.coursera.scms.model.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,13 +15,16 @@ public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    public Appointment bookAppointment(Appointment appointment) {
-        return appointmentRepository.save(appointment);
-    }
+    @Autowired
+    private DoctorRepository doctorRepository;
 
-    public List<Appointment> getAppointmentsByDoctorAndDate(Long doctorId, LocalDate date) {
-        LocalDateTime start = date.atStartOfDay();
-        LocalDateTime end = date.plusDays(1).atStartOfDay();
-        return appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doctorId, start, end);
+    public List<Appointment> getAppointmentsForDoctor(String doctorEmail) {
+        Doctor doctor = doctorRepository.findByEmail(doctorEmail)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        return appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(
+                doctor.getId(),
+                java.time.LocalDateTime.MIN,
+                java.time.LocalDateTime.MAX
+        );
     }
 }

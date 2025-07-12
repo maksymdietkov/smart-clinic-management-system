@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Doctor Dashboard</title></head>
+<body>
+<h2>Your Appointments</h2>
+<ul>
+    <li th:each="appt : ${appointments}">
+        <span th:text="${appt.date}">Date</span>,
+        <span th:text="${appt.time}">Time</span> —
+        <span th:text="${appt.patientEmail}">Patient</span>
+    </li>
+</ul>
+</body>
+</html>
