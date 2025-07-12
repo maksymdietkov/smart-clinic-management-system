@@ -1,5 +1,6 @@
 package com.coursera.scms.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,19 +15,20 @@ public class LoginController {
 
     @GetMapping("/login-admin")
     public String loginAdminForm(Model model) {
-        // error из flash атрибутов, если был редирект с ошибкой
         return "login-admin";
     }
 
     @PostMapping("/login-admin")
     public String loginAdminSubmit(@RequestParam String username,
                                    @RequestParam String password,
+                                   HttpSession session,
                                    RedirectAttributes redirectAttributes) {
         if ("admin".equals(username) && "admin123".equals(password)) {
+            session.setAttribute("userRole", "admin");  // Сохраняем роль в сессию
             return "redirect:/admin/dashboard";
         } else {
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
-            return "redirect:/login-admin"; // редирект, чтобы избежать Circular view path
+            return "redirect:/login-admin";
         }
     }
 
@@ -40,8 +42,10 @@ public class LoginController {
     @PostMapping("/login-doctor")
     public String loginDoctorSubmit(@RequestParam String username,
                                     @RequestParam String password,
+                                    HttpSession session,
                                     RedirectAttributes redirectAttributes) {
         if ("doctor".equals(username) && "doctor123".equals(password)) {
+            session.setAttribute("userRole", "doctor");
             return "redirect:/doctor/dashboard";
         } else {
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
@@ -59,8 +63,10 @@ public class LoginController {
     @PostMapping("/login-patient")
     public String loginPatientSubmit(@RequestParam String username,
                                      @RequestParam String password,
+                                     HttpSession session,
                                      RedirectAttributes redirectAttributes) {
         if ("patient".equals(username) && "patient123".equals(password)) {
+            session.setAttribute("userRole", "patient");
             return "redirect:/patient/dashboard";
         } else {
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
