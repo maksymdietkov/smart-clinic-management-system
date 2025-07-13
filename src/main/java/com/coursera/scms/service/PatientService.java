@@ -21,5 +21,5 @@ public class PatientService {
     public Optional<Patient> findByEmail(String email) {
         return patientRepository.findByEmail(email);
     }
-    // можно добавить методы для создания пациента и другие
+
 }

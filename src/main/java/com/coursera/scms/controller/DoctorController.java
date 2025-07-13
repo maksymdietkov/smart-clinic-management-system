@@ -6,9 +6,12 @@ import com.coursera.scms.service.AppointmentService;
 import com.coursera.scms.service.DoctorService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,5 +61,29 @@ public class DoctorController {
             model.addAttribute("error", "Doctor not found");
             return "login-doctor";
         }
+    }
+
+    @GetMapping("/availability/{user}/{doctorId}/{date}/{token}")
+    public ResponseEntity<?> getDoctorAvailability(
+            @PathVariable String user,
+            @PathVariable Long doctorId,
+            @PathVariable String date,
+            @PathVariable String token) {
+
+        boolean validToken = doctorService.validateToken(token, user);
+        if (!validToken) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+        }
+
+        // Предполагается, что есть метод в сервисе для получения доступности доктора по дате
+        List<Appointment> availability;
+        try {
+            availability = appointmentService.getDoctorAvailability(doctorId, date);
+        } catch (Exception e) {
+            logger.severe("Error fetching availability: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching availability");
+        }
+
+        return ResponseEntity.ok(availability);
     }
 }

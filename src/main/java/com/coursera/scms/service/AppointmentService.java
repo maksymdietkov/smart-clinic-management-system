@@ -23,25 +23,22 @@ public class AppointmentService {
     @Autowired
     private PatientRepository patientRepository;
 
-    // Получить список всех записей к доктору на ближайший месяц
     public List<Appointment> getAppointmentsForDoctorId(Long doctorId) {
         return appointmentRepository.findByDoctorIdOrderByAppointmentTimeAsc(doctorId);
     }
 
-    // Создать новую запись на прием
     public Appointment createAppointment(Long doctorId, Long patientId, LocalDateTime appointmentTime) throws Exception {
-        // Проверка существования доктора
+
         Optional doctorOpt = doctorRepository.findById(doctorId);
         if (doctorOpt.isEmpty()) {
             throw new Exception("Doctor not found");
         }
-        // Проверка существования пациента
+
         Optional patientOpt = patientRepository.findById(patientId);
         if (patientOpt.isEmpty()) {
             throw new Exception("Patient not found");
         }
 
-        // Создаем запись
         Appointment appointment = new Appointment();
         appointment.setDoctor((com.coursera.scms.model.Doctor) doctorOpt.get());
         appointment.setPatient((com.coursera.scms.model.Patient) patientOpt.get());
@@ -54,4 +51,8 @@ public class AppointmentService {
         return appointmentRepository.findByPatientIdOrderByAppointmentTimeAsc(patientId);
     }
 
+    // Новый метод для получения доступности доктора по дате (в формате yyyy-MM-dd)
+    public List<Appointment> getDoctorAvailability(Long doctorId, String date) {
+        return appointmentRepository.findByDoctorIdAndDate(doctorId, date);
+    }
 }

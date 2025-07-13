@@ -25,7 +25,7 @@ public class DoctorService {
     }
 
     public List<Doctor> findAllDoctors() {
-        return doctorRepository.findAll();  // ← этот метод ты используешь в контроллере
+        return doctorRepository.findAll();
     }
 
     public List<String> getAvailableTimeSlots(Long doctorId, LocalDate date) {
